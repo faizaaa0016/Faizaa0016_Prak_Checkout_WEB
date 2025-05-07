@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penjualan Minuman Kopi</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        color: #333;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #2f40a0;
+      }
+
+      .logo {
+        width: 150px;
+        height: auto;
+        margin: 20px auto;
+        display: block;
+      }
+
+      .menu-container {
+        margin-top: 20px;
+      }
+
+      .menu {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+      }
+
+      .menu-item {
+        background: #ffffff;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        color: #333;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .menu-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      } 
+
+      .menu-item img {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        object-fit: cover;
+      }
+
+      .menu-item-info {
+        margin: 8px 0;
+        text-align: center;
+        font-size: 14px;
+        width: 100%;
+      }
+
+      .menu-item-info span:first-child {
+        font-weight: bold;
+        font-size: 16px;
+        display: block;
+        margin-bottom: 4px;
+        color: #2f40a0;
+      }
+
+      .menu-item-info span:last-child {
+        font-size: 15px;
+        color: #555;
+      }
+
+      .cart-icon {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ffe600;
+        color: rgb(0, 0, 0);
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        z-index: 101;
+      }
+
+      .cart {
+        display: none;
+        position: fixed;
+        top: 60px;
+        right: 20px;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        width: 300px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .cart h2 {
+        color: #2f40a0;
+        margin-top: 0;
+        border-bottom: 2px solid #fbff07;
+        padding-bottom: 10px;
+      }
+
+      .cart h3 {
+        color: #2f40a0;
+        margin: 15px 0 8px 0;
+      }
+
+      .cart ul {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0;
+      }
+
+      .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background: #f9f9f9;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        margin: 5px 0;
+        color: #333;
+      }
+
+      .order-button,
+      .quantity-button {
+        background-color: #fbff07;
+        color: rgb(0, 0, 0);
+        border: none;
+        padding: 6px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 3px;
+        width: 80%;
+      }
+
+      .order-button:hover,
+      .quantity-button:hover {
+        background-color: #f0e8e8;
+      }
+
+      .customization-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0;
+      }
+
+      .customization-buttons .quantity-button {
+        width: 30%;
+        font-size: 12px;
+        padding: 8px 5px;
+      }
+
+      #whatsapp-button {
+        width: 100%;
+        background-color: #fbff07;
+        color: black;
+        padding: 10px;
+        margin-top: 15px;
+        font-weight: bold;
+      }
+
+      .contact {
+        margin-top: 30px;
+        font-size: 16px;
+        color: #2f40a0;
+        padding: 15px;
+        border-top: 1px solid #eee;
+      }
+
+      .cart-total {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+        margin-top: 10px;
+      }
+
+      .category-title {
+        font-weight: bold;
+        margin-top: 15px;
+        border-bottom: 1px dashed #ddd;
+        padding-bottom: 5px;
+        color: #2f40a0;
+        text-align: left;
+      }
+
+      .customization-item {
+        background: #f0f8ff;
+        border: 1px dashed #ccc;
+      }
+
+      .drink-select {
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        margin: 5px 0;
+      }
+
+      /* Improved button styles */
+      .options-section {
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      .options-label {
+        font-size: 12px;
+        color: #666;
+        text-align: left;
+        margin-bottom: 5px;
+        display: block;
+        width: 100%;
+      }
+
+      /* Cup size selector styles */
+      .cup-size-selector {
+        display: flex;
+        width: 100%;
+        margin-bottom: 12px;
+      }
+
+      /* Gaya untuk tombol ukuran cangkir */
+      .cup-size-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin: 8px 0;
+      }
+
+      .cup-size-button {
+        flex: 1;
+        width: 48%;
+        background-color: #fbff07;
+        color: black;
+        border: 1px, solid #ddd;
+        padding: 8px 4px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.2s;
+      }
+
+      .cup-size-button:first-child {
+        border-radius: 10px 0 0 10px;
+      }
+
+      .cup-size-button:last-child {
+        border-radius: 0 10px 10px 0;
+      }
+
+      .cup-size-button.active {
+        background-color: #fcfbff;
+        font-weight: bold;
+        color: #000;
+        border-color: #e4e702;
+      }
+
+      /* Gaya untuk tombol customization */
+      .custom-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        width: 100%;
+        margin-bottom: 12px;
+      }
+
+      .custom-option {
+        flex: 1 0 calc(33.333% - 5px);
+        background-color: #fbff07;
+        color: black;
+        border: 1px solid #ddd;
+        padding: 8px 2px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.2s;
+      }
+
+      .custom-option.active {
+        background-color: #ffffff;
+        font-weight: bold;
+        color: #000;
+        border-color: #e4e702;
+      }
+
+      .order-button {
+        background-color: #fbff07;
+        color: #000;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        font-weight: bold;
+        margin-top: 5px;
+        transition: background-color 0.2s;
+      }
+
+      .order-button:hover {
+        background-color: #e4e702;
+      }
+
+      /* Gaya untuk modal */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 10px;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      /* Media query untuk perangkat mobile */
+      @media (max-width: 800px) {
+        .menu {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .cart {
+          width: 280px;
+          right: 10px;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .menu {
+          grid-template-columns: 1fr;
+        }
+
+        .cart {
+          width: 250px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img src="Logo Coffee Beans.png" alt="Logo Coffee Beans" class="logo">
+      <h1>Coffee Beans</h1>
+      <p>Bukan sekadar kopi, ini adalah cerita dalam setiap cangkirnya 🥨☕</p>
+      
+      <div class="menu-container">
+        <div class="menu">
+          <div class="menu-item">
+            <img src="Americano.jpeg" alt="Americano">
+            <div class="menu-item-info">
+              <span>Americano</span>
+              <span>Rp 15.000</span>
+            </div>
+
+            <div class="cup-size-selector">
+              <button class="cup-size-button active" onclick="selectCupSize(this, 'Regular')">Regular</button>
+              <button class="cup-size-button" onclick="selectCupSize(this, 'Large')">Large (Rp 3.000)</button>
+            </div>
+
+            <div class="custom-options">
+              <button class="custom-option" onclick="selectCustomization(this, 'Normal')">Normal</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Less Sugar')">Less Sugar</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Extra Ice')">Extra Ice</button>
+            </div>
+
+            <button class="order-button" onclick="addToCart('Americano', 15000, this.parentElement)">Pesan</button>
+          </div>
+          
+          <div class="menu-item">
+            <img src="Cappucino.jpeg" alt="Cappucino">
+            <div class="menu-item-info">
+              <span>Cappucino</span>
+              <span>Rp 10.000</span>
+            </div>
+            
+            <div class="cup-size-selector">
+              <button class="cup-size-button active" onclick="selectCupSize(this, 'Regular')">Regular</button>
+              <button class="cup-size-button" onclick="selectCupSize(this, 'Large')">Large (Rp 3.000)</button>
+            </div>
+            <div class="custom-options">
+              <button class="custom-option" onclick="selectCustomization(this, 'Normal')">Normal</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Less Sugar')">Less Sugar</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Extra Ice')">Extra Ice</button>
+            </div>
+            <button class="order-button" onclick="addToCart('Cappucino', 10000, this.parentElement)">Pesan</button>
+          </div>
+          
+          <div class="menu-item">
+            <img src="Caramel Machiato.jpeg" alt="Caramel Machiato">
+            <div class="menu-item-info">
+              <span>Caramel Machiato</span>
+              <span>Rp 10.000</span>
+            </div>
+            <div class="cup-size-selector">
+              <button class="cup-size-button active" onclick="selectCupSize(this, 'Regular')">Regular</button>
+              <button class="cup-size-button" onclick="selectCupSize(this, 'Large')">Large (Rp 3.000)</button>
+            </div>
+            <div class="custom-options">
+              <button class="custom-option" onclick="selectCustomization(this, 'Normal')">Normal</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Less Sugar')">Less Sugar</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Extra Ice')">Extra Ice</button>
+            </div>
+            <button class="order-button" onclick="addToCart('Caramel Machiato', 10000, this.parentElement)">Pesan</button>
+          </div>
+          
+          <div class="menu-item">
+            <img src="Coffee Latte.jpeg" alt="Coffee Latte">
+            <div class="menu-item-info">
+              <span>Coffee Latte</span>
+              <span>Rp 11.000</span>
+            </div>
+            <div class="cup-size-selector">
+              <button class="cup-size-button active" onclick="selectCupSize(this, 'Regular')">Regular</button>
+              <button class="cup-size-button" onclick="selectCupSize(this, 'Large')">Large (Rp 3.000)</button>
+            </div>
+            <div class="custom-options">
+              <button class="custom-option" onclick="selectCustomization(this, 'Normal')">Normal</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Less Sugar')">Less Sugar</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Extra Ice')">Extra Ice</button>
+            </div>
+            <button class="order-button" onclick="addToCart('Coffee Latte', 11000, this.parentElement)">Pesan</button>
+          </div>
+          
+          <div class="menu-item">
+            <img src="Espresso.jpeg" alt="Espresso">
+            <div class="menu-item-info">
+              <span>Espresso</span>
+              <span>Rp 15.000</span>
+            </div>
+            <div class="cup-size-selector">
+              <button class="cup-size-button active" onclick="selectCupSize(this, 'Regular')">Regular</button>
+              <button class="cup-size-button" onclick="selectCupSize(this, 'Large')">Large (Rp 3.000)</button>
+            </div>
+            <div class="custom-options">
+              <button class="custom-option" onclick="selectCustomization(this, 'Normal')">Normal</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Less Sugar')">Less Sugar</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Extra Ice')">Extra Ice</button>
+            </div>
+            <button class="order-button" onclick="addToCart('Espresso', 15000, this.parentElement)">Pesan</button>
+          </div>
+          
+          <div class="menu-item">
+            <img src="Mochaccino.jpeg" alt="Mochaccino">
+            <div class="menu-item-info">
+              <span>Mochaccino</span>
+              <span>Rp 10.000</span>
+            </div>
+            <div class="cup-size-selector">
+              <button class="cup-size-button active" onclick="selectCupSize(this, 'Regular')">Regular</button>
+              <button class="cup-size-button" onclick="selectCupSize(this, 'Large')">Large (Rp 3.000)</button>
+            </div>
+            <div class="custom-options">
+              <button class="custom-option" onclick="selectCustomization(this, 'Normal')">Normal</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Less Sugar')">Less Sugar</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Extra Ice')">Extra Ice</button>
+            </div>
+            <button class="order-button" onclick="addToCart('Mochaccino', 10000, this.parentElement)">Pesan</button>
+          </div>
+          
+          <div class="menu-item">
+            <img src="Vanilla Latte.jpeg" alt="Vanila Latte">
+            <div class="menu-item-info">
+              <span>Vanilla Latte</span>
+              <span>Rp 9.000</span>
+            </div>
+            <div class="cup-size-selector">
+              <button class="cup-size-button active" onclick="selectCupSize(this, 'Regular')">Regular</button>
+              <button class="cup-size-button" onclick="selectCupSize(this, 'Large')">Large (Rp 3.000)</button>
+            </div>
+            <div class="custom-options">
+              <button class="custom-option" onclick="selectCustomization(this, 'Normal')">Normal</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Less Sugar')">Less Sugar</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Extra Ice')">Extra Ice</button>
+            </div>
+            <button class="order-button" onclick="addToCart('Vanilla Latte', 9000, this.parentElement)">Pesan</button>
+          </div>
+          
+          <div class="menu-item">
+            <img src="Green Tea.jpeg" alt="Green Tea">
+            <div class="menu-item-info">
+              <span>Green Tea</span>
+              <span>Rp 9.000</span>
+            </div>
+            <div class="cup-size-selector">
+              <button class="cup-size-button active" onclick="selectCupSize(this, 'Regular')">Regular</button>
+              <button class="cup-size-button" onclick="selectCupSize(this, 'Large')">Large (Rp 3.000)</button>
+            </div>
+            <div class="custom-options">
+              <button class="custom-option" onclick="selectCustomization(this, 'Normal')">Normal</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Less Sugar')">Less Sugar</button>
+              <button class="custom-option" onclick="selectCustomization(this, 'Extra Ice')">Extra Ice</button>
+            </div>
+            <button class="order-button" onclick="addToCart('Green Tea', 9000, this.parentElement)">Pesan</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="cart-icon" onclick="toggleCart()">🛒 <span id="cart-count">0</span></div>
+      
+      <div class="cart" id="cart">
+        <h2>Keranjang Pesanan</h2>
+        <div class="category-title">Minuman</div>
+        <ul id="cart-list"></ul>
+        
+        <div class="cart-total">
+          <span>Total Minuman:</span>
+          <span id="total-items">0</span>
+        </div>
+        <div class="cart-total">
+          <span>Total Harga:</span>
+          <span id="total-price">Rp 0</span>
+        </div>
+        <button class="order-button" id="whatsapp-button" onclick="sendOrderToWhatsApp()">Pesan via WhatsApp</button>
+      </div>
+      
+      <div class="contact">
+        <p>Hubungi Kami:</p>
+        <p>Email: <a href="mailto:dailycoffeebeans.id@gmail.com">dailycoffeebeans.id@gmail.com</a></p>
+        <p>WhatsApp: <a href="https://wa.me/6282246553077" target="_blank">+62 822-4655-3077</a></p>
+      </div>
+    </div>
+
+    <script>
+      let cart = {}; // { itemId: { name: string, price: number, basePrice: number, quantity: number, size: string, customizations: string[] } }
+      let cartVisible = false;
+      let nextItemId = 1;
+
+      // Fungsi untuk memilih ukuran cangkir
+      function selectCupSize(button, size) {
+        // Dapatkan container cup-size-selector
+        const sizeContainer = button.parentElement;
+        // Hapus kelas active dari semua tombol
+        const buttons = sizeContainer.querySelectorAll('.cup-size-button');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        // Tandai tombol yang dipilih sebagai active
+        button.classList.add('active');
+      }
+
+      // Fungsi untuk memilih customization
+      function selectCustomization(button, option) {
+        // Jika Normal dipilih, batalkan pilihan lain
+        if (option === 'Normal') {
+          // Dapatkan container custom-options
+          const customContainer = button.parentElement;
+          // Hapus kelas active dari semua tombol
+          const buttons = customContainer.querySelectorAll('.custom-option');
+          buttons.forEach(btn => {
+            if (btn !== button) {
+              btn.classList.remove('active');
+            }
+          });
+        } else {
+          // Jika opsi lain dipilih, batalkan Normal
+          const customContainer = button.parentElement;
+          const normalButton = Array.from(customContainer.querySelectorAll('.custom-option')).find(
+            btn => btn.textContent === 'Normal'
+          );
+          if (normalButton && normalButton.classList.contains('active')) {
+            normalButton.classList.remove('active');
+          }
+        }
+        
+        // Toggle active status
+        button.classList.toggle('active');
+      }
+
+      // Mencari item dengan nama dan ukuran yang sama di keranjang
+      function findExistingItem(itemName, size, customizations) {
+        // Kita harus membandingkan array customizations juga
+        // Dalam hal ini agar lebih sederhana kita bisa membuat item baru untuk setiap kombinasi
+        return null; // Selalu membuat item baru untuk setiap pesanan
+      }
+
+      // Tambah item ke keranjang
+      function addToCart(item, basePrice, menuItemElement) {
+        // Dapatkan ukuran cangkir yang dipilih dari menu item
+        const activeButton = menuItemElement.querySelector('.cup-size-button.active');
+        const selectedSize = activeButton.textContent.includes('Large') ? 'Large' : 'Regular';
+        
+        // Dapatkan customization yang dipilih
+        const customOptions = menuItemElement.querySelectorAll('.custom-option.active');
+        const selectedCustomizations = Array.from(customOptions).map(option => option.textContent);
+        
+        // Jika tidak ada customization yang dipilih, gunakan Normal sebagai default
+        if (selectedCustomizations.length === 0) {
+          selectedCustomizations.push('Normal');
+        }
+        
+        console.log("Menambahkan ke keranjang:", item, basePrice, "Ukuran:", selectedSize, "Customizations:", selectedCustomizations);
+        
+        let finalPrice = basePrice;
+        // Tambah harga untuk Large
+        if (selectedSize === 'Large') {
+          finalPrice += 3000;
+        }
+        
+        // Cek apakah item dengan nama, ukuran, dan customization yang sama sudah ada di keranjang
+        const existingItemId = findExistingItem(item, selectedSize, selectedCustomizations);
+        
+        if (existingItemId) {
+          // Jika sudah ada, tambah quantity
+          cart[existingItemId].quantity++;
+          console.log("Item yang sudah ada ditambah:", cart[existingItemId]);
+        } else {
+          // Jika belum ada, buat item baru
+          const itemId = `item-${nextItemId++}`;
+          cart[itemId] = {
+            name: item,
+            price: finalPrice,
+            basePrice: basePrice,
+            quantity: 1,
+            size: selectedSize,
+            customizations: selectedCustomizations
+          };
+          console.log("Item baru ditambahkan:", cart[itemId]);
+        }
+        
+        // Buka keranjang otomatis saat menambah item
+        if (!cartVisible) {
+          toggleCart();
+        }
+        
+        updateCart();
+      }
+
+      // Hapus item dari keranjang
+      function removeFromCart(itemId) {
+        if (cart[itemId]) {
+          if (cart[itemId].quantity > 1) {
+            cart[itemId].quantity--;
+          } else {
+            delete cart[itemId];
+          }
+          updateCart();
+        }
+      }
+
+      // Tambah jumlah item
+      function increaseQuantity(itemId) {
+        if (cart[itemId]) {
+          cart[itemId].quantity++;
+          updateCart();
+        }
+      }
+
+      // Update tampilan keranjang
+      function updateCart() {
+        const cartList = document.getElementById("cart-list");
+        const totalItems = document.getElementById("total-items");
+        const totalPrice = document.getElementById("total-price");
+        const cartCount = document.getElementById("cart-count");
+        
+        // Bersihkan seluruh daftar
+        cartList.innerHTML = "";
+        
+        let totalCount = 0;
+        let totalPriceValue = 0;
+        
+        // Tampilkan minuman
+        for (let itemId in cart) {
+          const item = cart[itemId];
+          
+          // Format customizations
+          const customizationsText = item.customizations.join(', ');
+          
+          // Tambahkan ke daftar keranjang
+          let listItem = document.createElement("li");
+          listItem.classList.add("cart-item");
+          
+          // Format harga dengan pemisah ribuan
+          const formattedPrice = (item.price * item.quantity).toLocaleString();
+          
+          listItem.innerHTML = `
+            <div style="flex: 1; text-align: left;">
+              <div><strong>${item.name}</strong> (${item.size}) - ${item.quantity}x</div>
+              <div style="font-size: 12px; color: #666;">${customizationsText}</div>
+              <div>Rp ${formattedPrice}</div>
+            </div>
+            <div>
+              <button class="quantity-button" onclick="removeFromCart('${itemId}')">-</button>
+              <button class="quantity-button" onclick="increaseQuantity('${itemId}')">+</button>
+            </div>
+          `;
+          
+          cartList.appendChild(listItem);
+          totalCount += item.quantity;
+          totalPriceValue += item.price * item.quantity;
+        }
+        
+        totalItems.textContent = totalCount;
+        totalPrice.textContent = `Rp ${totalPriceValue.toLocaleString()}`;
+        cartCount.textContent = totalCount;
+        
+        // Enable or disable the WhatsApp button based on cart status
+        document.getElementById("whatsapp-button").disabled = totalCount === 0;
+      }
+
+      // Tampilkan/sembunyikan keranjang
+      function toggleCart() {
+        cartVisible = !cartVisible;
+        document.getElementById("cart").style.display = cartVisible ? "block" : "none";
+      }
+
+      // Kirim pesanan ke WhatsApp
+      function sendOrderToWhatsApp() {
+        if (Object.keys(cart).length === 0) {
+          alert("Silakan pilih minuman terlebih dahulu sebelum memesan.");
+          return; // Tidak melanjutkan jika keranjang kosong
+        }
+        
+        let phoneNumber = "6282246553077";
+        let totalAmount = 0;
+        let message = "Halo, saya ingin memesan:\n\n";
+        
+        // Format minuman
+        message += "*MINUMAN:*\n";
+        let itemNumber = 1;
+        
+        for (let itemId in cart) {
+          const item = cart[itemId];
+          const itemTotal = item.price * item.quantity;
+          
+          message += `${itemNumber}. ${item.name} (${item.size}): ${item.quantity}x - Rp ${itemTotal.toLocaleString()}\n`;
+          message += `   ↳ ${item.customizations.join(', ')}\n`;
+          
+          totalAmount += itemTotal;
+          itemNumber++;
+        }
+        
+        // Tambahkan total
+        message += `\n*TOTAL: Rp ${totalAmount.toLocaleString()}*\n`;
+        
+        let whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappURL, "_blank");
+      }
+
+      // Initialize the cart display
+      updateCart();
+    </script>
+  </body>
+</html>
